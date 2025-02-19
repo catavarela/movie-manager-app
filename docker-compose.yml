@@ -10,6 +10,9 @@ services:
       - ./src:/usr/src/app/src
     environment:
       NODE_ENV: dev
+      DATABASE_URL: ${DATABASE_URL_DOCKER}
+    networks:
+      - nestjs
   db:
     container_name: movie-manager-db
     image: postgres:latest
@@ -21,6 +24,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nestjs
 
 volumes:
   postgres_data:
+networks:
+  nestjs:

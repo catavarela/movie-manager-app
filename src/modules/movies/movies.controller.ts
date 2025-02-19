@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Query, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { Roles } from '../users/roles/decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import { RolesGuard } from '../users/roles/guards/roles.guard';
+import { CreateMovieDto, UpdateMovieDto } from './dto';
 
 @UseGuards(RolesGuard)
 @UseGuards(AuthGuard)

@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { MoviesModule } from './modules/movies/movies.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { GlobalExceptionInterceptor } from './common/errors/global-exception.interceptor';
+import { RolesGuard } from './modules/users/roles/guards/roles.guard';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule.forRoot({isGlobal: true,}), AuthModule, UsersModule, MoviesModule, PrismaModule],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GlobalExceptionInterceptor,
+    }
+  ],
 })
 export class AppModule {}

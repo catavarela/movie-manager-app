@@ -1,0 +1,13 @@
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  hash      String
+  roles Role[] @default([USER])
+}
+
+enum Role {
+  USER
+  ADMIN
+}

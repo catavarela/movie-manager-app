@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUrl } from "class-validator"
+import { IsDateString, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl } from "class-validator"
 
 export class CreateMovieDto {
 

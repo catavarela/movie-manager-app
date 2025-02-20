@@ -1,5 +1,5 @@
 const enum ERROR_MSG_REGISTER {
-  DUPLICATED_EMAIL = 'Email already registered',
+  DUPLICATED_EMAIL = 'Email already registered.',
 }
 
 const enum ERROR_MSG_LOGIN {

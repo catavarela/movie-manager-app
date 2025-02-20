@@ -32,7 +32,7 @@ export class MoviesService {
       if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DOES_NOT_EXIST){
         throw new ResourceNotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
       }
-    });;
+    });
   }
 
   updateMany(updateMoviesDto: UpdateMovieDto[]) {

@@ -10,4 +10,5 @@ model User {
 enum Role {
   USER
   ADMIN
+  ROOT
 }

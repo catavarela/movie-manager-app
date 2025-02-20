@@ -47,6 +47,16 @@ export class MoviesService {
     return this.prisma.movie.findUnique({ where: { title } });
   }
 
+  findManyByTitle(titles: string[]){
+    return this.prisma.movie.findMany({
+      where: {
+        title: {
+          in: titles
+        }
+      }
+    })
+  }
+
   remove(id: string) {
     return this.prisma.movie.delete({ where: { id } }).catch(error => {
       if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DELETE_DOES_NOT_EXIST){

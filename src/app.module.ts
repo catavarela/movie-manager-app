@@ -4,12 +4,13 @@ import { UsersModule } from './modules/users/users.module';
 import { MoviesModule } from './modules/movies/movies.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalExceptionInterceptor } from './common/errors/global-exception.interceptor';
-import { RolesGuard } from './modules/users/roles/guards/roles.guard';
+import { ScheduleModule } from '@nestjs/schedule';
+import { JobsModule } from './modules/jobs/jobs.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true,}), AuthModule, UsersModule, MoviesModule, PrismaModule],
+  imports: [ConfigModule.forRoot({isGlobal: true,}), AuthModule, UsersModule, MoviesModule, PrismaModule, ScheduleModule.forRoot(), JobsModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,

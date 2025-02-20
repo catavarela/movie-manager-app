@@ -10,23 +10,23 @@ import { CreateMovieDto, UpdateMovieDto } from './dto';
 @UseGuards(AuthGuard)
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly moviesService: MoviesService) {}
+  constructor(private readonly movies: MoviesService) {}
 
   @Post()
   @Roles(Role.ADMIN)
   async create(@Body() createMovieDto: CreateMovieDto) {
-    return await this.moviesService.create(createMovieDto);
+    return await this.movies.create(createMovieDto);
   }
 
   @Get()
   async findAll(@Query('page') page: number = 0, @Query('size') size: number = 10) {
     size = size <= 1000 && size > 0 ? size : 1000;
-    return await this.moviesService.findAll(page, size);
+    return await this.movies.findAll(page, size);
   }
 
   @Get('search')
   async findOneByTitle(@Query('title') title: string) {
-    const movie = await this.moviesService.findOneByTitle(title);
+    const movie = await this.movies.findOneByTitle(title);
     
     if(!movie) {
       throw new NotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
@@ -37,7 +37,7 @@ export class MoviesController {
 
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string) {
-    const movie = await this.moviesService.findOne(uuid);
+    const movie = await this.movies.findOne(uuid);
 
     if(!movie) {
       throw new NotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
@@ -50,25 +50,13 @@ export class MoviesController {
   @Delete(':uuid')
   @Roles(Role.ADMIN)
   async remove(@Param('uuid') uuid: string) {
-    return await this.moviesService.remove(uuid);
+    return await this.movies.remove(uuid);
   }
 
-  @Patch(':uuid') //probar tipos del dto cuando levante de la API de star wars
+  @Patch(':uuid')
   @Roles(Role.ADMIN)
   async update(@Param('uuid') uuid: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return await this.moviesService.update(uuid, updateMovieDto);
-  }
-
-  //creo que no es necesario, porque el cron podria usar el servicio directamente
-  @Post()
-  async createMany(@Body() createMoviesDto: CreateMovieDto[]) {
-    return await this.moviesService.createMany(createMoviesDto);
-  }
-
-  //creo que no es necesario, porque el cron podria usar el servicio directamente
-  @Patch()
-  async updateMany(@Body() updateMoviesDto: UpdateMovieDto[]) {
-    return await this.moviesService.updateMany(updateMoviesDto);
+    return await this.movies.update(uuid, updateMovieDto);
   }
 
 }

@@ -5,11 +5,11 @@ import { WrongPasswordException } from './errors/auth.exceptions';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly auth: AuthService) {}
 
   @Post('login')
   login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto.email, loginDto.password).catch(e => {
+    return this.auth.login(loginDto.email, loginDto.password).catch(e => {
       if(e instanceof WrongPasswordException){
         throw new ForbiddenException;
       }
@@ -18,7 +18,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto.email, registerDto.password);
+    return this.auth.register(registerDto.email, registerDto.password);
   }
 }
 

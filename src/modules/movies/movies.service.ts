@@ -23,12 +23,16 @@ export class MoviesService {
   }
 
   update(id: string, updateMovieDto: UpdateMovieDto) {
-    const {id: dtoId, ...data} = updateMovieDto;
+    const {id: _, ...data} = updateMovieDto;
 
     return this.prisma.movie.update({
       where: { id },
       data
-    });
+    }).catch(error => {
+      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DOES_NOT_EXIST){
+        throw new ResourceNotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
+      }
+    });;
   }
 
   updateMany(updateMoviesDto: UpdateMovieDto[]) {
@@ -59,7 +63,7 @@ export class MoviesService {
 
   remove(id: string) {
     return this.prisma.movie.delete({ where: { id } }).catch(error => {
-      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DELETE_DOES_NOT_EXIST){
+      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DOES_NOT_EXIST){
         throw new ResourceNotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
       }
     });

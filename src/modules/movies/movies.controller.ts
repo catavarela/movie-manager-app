@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, Query, HttpStatus, HttpCode, UseGuards, ConflictException } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { Roles } from '../users/roles/decorators/roles.decorator';
+import { Roles } from '../users/decorators/roles.decorator';
 import { Role, Movie } from '@prisma/client';
-import { RolesGuard } from '../users/roles/guards/roles.guard';
 import { CreateMovieDto, UpdateMovieDto } from './dto';
 import { ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { RolesGuard } from '@modules/users/guards/roles.guard';
 
 @ApiBearerAuth()
 @UseGuards(RolesGuard)

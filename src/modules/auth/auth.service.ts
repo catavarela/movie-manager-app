@@ -1,12 +1,12 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UsersService } from 'src/modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { PRISMA_ERRORS } from 'src/modules/prisma/constants/constants';
-import { DuplicatedResourceException, ResourceNotFoundException } from 'src/common/errors/exceptions';
 import { WrongPasswordException } from './errors/auth.exceptions';
 import { Role } from '@prisma/client';
+import { DuplicatedResourceException, ResourceNotFoundException } from '@common/errors';
+import { PRISMA_ERRORS } from '@modules/prisma/constants/constants';
+import { UsersService } from '@modules/users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +41,7 @@ export class AuthService {
     return await this.userToken(user.id, user.email, user.roles);
   }
 
-  async userToken(id: string, email: string, roles: Role[]) {
+  private async userToken(id: string, email: string, roles: Role[]) {
     const payload = { sub: id, email, roles };
 
     return {

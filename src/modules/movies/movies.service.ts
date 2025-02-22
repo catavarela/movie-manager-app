@@ -4,7 +4,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PRISMA_ERRORS } from '../prisma/constants/constants';
-import { DuplicatedResourceException, ResourceNotFoundException } from 'src/common/errors/exceptions';
+import { DuplicatedResourceException, ResourceNotFoundException } from '@common/errors';
 
 @Injectable()
 export class MoviesService {
@@ -16,7 +16,7 @@ export class MoviesService {
         throw new DuplicatedResourceException(ERROR_MSG_MOVIES.DUPLICATED_MOVIE);
       }
     });
-}
+  }
 
   createMany(createMoviesDto: CreateMovieDto[]) {
     return this.prisma.movie.createManyAndReturn({ data: createMoviesDto, skipDuplicates: true, });
@@ -29,10 +29,10 @@ export class MoviesService {
       where: { id },
       data
     }).catch(error => {
-      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DOES_NOT_EXIST){
+      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_DOES_NOT_EXIST){
         throw new ResourceNotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
       }
-    });;
+    });
   }
 
   updateMany(updateMoviesDto: UpdateMovieDto[]) {
@@ -40,7 +40,7 @@ export class MoviesService {
   }
 
   findAll(page: number, size: number) {
-    return this.prisma.movie.findMany({ skip: page, take: size });
+    return this.prisma.movie.findMany({ skip: page * size, take: size });
   }
 
   findOne(id: string) {
@@ -63,7 +63,7 @@ export class MoviesService {
 
   remove(id: string) {
     return this.prisma.movie.delete({ where: { id } }).catch(error => {
-      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_TO_DOES_NOT_EXIST){
+      if(error instanceof PrismaClientKnownRequestError && error.code === PRISMA_ERRORS.RECORD_DOES_NOT_EXIST){
         throw new ResourceNotFoundException(ERROR_MSG_MOVIES.MOVIE_NOT_FOUND);
       }
     });

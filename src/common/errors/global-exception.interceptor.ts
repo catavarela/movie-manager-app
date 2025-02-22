@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { catchError, Observable, throwError } from 'rxjs';
 import { NotFoundException } from '@nestjs/common';
-import { DuplicatedResourceException, ResourceNotFoundException } from './exceptions';
+import { DuplicatedResourceException, ResourceNotFoundException } from '.';
 
 @Injectable()
 export class GlobalExceptionInterceptor implements NestInterceptor {

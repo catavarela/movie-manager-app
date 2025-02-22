@@ -23,7 +23,7 @@ interface SWMovie {
 }
 
 @Injectable()
-export class UpdateMoviesService {
+export class UpdateMoviesJob {
   constructor(private readonly movies: MoviesService, private readonly config: ConfigService){}
 
   @Cron('0 3 * * *')
@@ -45,7 +45,7 @@ export class UpdateMoviesService {
     } while(response && !!response.next)
   }
 
-  async createOrUpdateMovies(movies: SWMovie[]) {
+  private async createOrUpdateMovies(movies: SWMovie[]) {
     const {SWMoviesInDB, SWMoviesNotInDB} = await this.separateMoviesByPresenceInDB(movies);
     const moviesInDBReadyToSave = SWMoviesInDB.map(movie => this.transformToUpdateMovieDto(movie));
     const moviesNotInDBReadyToSave = SWMoviesNotInDB.map(movie => this.transformToCreateMovieDto(movie));
@@ -56,7 +56,7 @@ export class UpdateMoviesService {
     ]);
   }
 
-  transformToUpdateMovieDto(movie: SWMovie & { id: string }): UpdateMovieDto {
+  private transformToUpdateMovieDto(movie: SWMovie & { id: string }): UpdateMovieDto {
     const { id, ...movieWithoutId } = movie;
 
     return {
@@ -65,7 +65,7 @@ export class UpdateMoviesService {
     }
   }
 
-  transformToCreateMovieDto(movie: SWMovie): CreateMovieDto {
+  private transformToCreateMovieDto(movie: SWMovie): CreateMovieDto {
     return {
         title: movie.title,
         director: movie.director,
@@ -86,7 +86,7 @@ export class UpdateMoviesService {
     }
   }
 
-  async separateMoviesByPresenceInDB(movies: SWMovie[]) {
+  private async separateMoviesByPresenceInDB(movies: SWMovie[]) {
     const movieTitles = movies.map(movie => movie.title);
     const moviesInDB = await this.movies.findManyByTitle(movieTitles);
 

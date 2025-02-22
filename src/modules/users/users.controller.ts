@@ -1,10 +1,10 @@
 import { Controller, Get, NotFoundException, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { RolesGuard } from "./roles/guards/roles.guard";
 import { AuthGuard } from "../auth/guards/auth.guard";
 import { ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from "@nestjs/swagger";
-import { Roles } from "./roles/decorators/roles.decorator";
+import { Roles } from "./decorators/roles.decorator";
 import { Role } from "@prisma/client";
+import { RolesGuard } from "./guards/roles.guard";
 
 @ApiBearerAuth()
 @UseGuards(RolesGuard)

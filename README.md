@@ -12,7 +12,7 @@ Make sure you have a valid .env and run:
 $ docker-compose up --build
 ```
 
-Once built, unless you make changes that can affect the container configuration like installing new dependencies or creating new db migrations, you can keep on running the project just by running:
+Once built, unless you make changes that can affect the container configuration like installing new dependencies or creating new db migrations, you can run the project with:
 
 ```bash
 $ docker-compose up
@@ -54,15 +54,11 @@ To see it reflected on your container, rebuild the project.
 
 ## Run tests
 
+This project has unit testing. To run the tests simply do:
+
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Deployment
